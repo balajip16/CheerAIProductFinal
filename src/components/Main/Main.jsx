@@ -1,15 +1,13 @@
-import "./Main.css";
 import React, { useState, useEffect, useRef } from "react";
-import { assets } from "../../assets/assets";
 import { useContext } from "react";
 import { Context } from "../../context/Context";
 import { getAuth } from "firebase/auth";
 import Vapi from "@vapi-ai/web";
+import "./Main.css";
+import { assets } from "../../assets/assets";
 
-
-const vapi = new Vapi(import.meta.env.VITE_VAPI_API_KEY, { serverUrl: import.meta.env.VITE_VAPI_SERVER_URL });  
+const vapi = new Vapi(import.meta.env.VITE_VAPI_API_KEY);
 const assistant_id = import.meta.env.VITE_VAPI_ASSISTANT_ID;
-
 
 const Main = () => {
   const {
@@ -20,12 +18,13 @@ const Main = () => {
     showResult,
     messages,
     loading,
-    resultData,
+    sendImage, 
   } = useContext(Context);
 
   const [isCalling, setIsCalling] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -34,7 +33,6 @@ const Main = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  
 
   const startCall = () => {
     setIsCalling(true);
@@ -50,17 +48,20 @@ const Main = () => {
 
   const endCall = () => {
     setIsCalling(false);
-    vapi.stop().then(() => {
-      console.log('Ended call');
-    }).catch((error) => {
-      console.error('Failed to end call:', error);
-    });
+    vapi.stop()
   };
 
   const toggleMute = () => {
     const newMuteState = !vapi.isMuted();
     vapi.setMuted(newMuteState);
     setIsMuted(newMuteState);
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      sendImage(file);
+    }
   };
 
   return (
@@ -112,46 +113,34 @@ const Main = () => {
                     <hr />
                     <hr />
                   </div>
-   ) : (
-    <>
-      <div className="messages__container">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
-          >
-            {message.text}
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
-      {/* <p dangerouslySetInnerHTML={{ __html: resultData }}></p> */}
-    </>
-  )}
-</div>
-</div>
-)}
-          {isCalling && (
-          <div className="call-overlay">
-            <div className="call-ui">
-              <img src={assets.mic_icon} alt="MicIcon" className="center-icon" />
-              <button onClick={toggleMute}>{isMuted ? 'Unmute' : 'Mute'}</button>
-              <button onClick={endCall}>End Call</button>
+                ) : (
+                  <>
+                    <div className="messages__container">
+                      {messages.map((message, index) => (
+                        <div
+                          key={index}
+                          className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+                        >
+                          {message.text}
+                        </div>
+                      ))}
+                      <div ref={messagesEndRef} />
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          {isCalling && (
+            <div className="call-overlay">
+              <div className="call-ui">
+                <img src={assets.mic_icon} alt="MicIcon" className="center-icon" />
+                <button onClick={toggleMute}>{isMuted ? 'Unmute' : 'Mute'}</button>
+                <button onClick={endCall}>End Call</button>
+              </div>
+            </div>
+          )}
           <div className="main-bottom">
-          {/* <div className="messages__container">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
-          >
-            {message.text}
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div> */}
             <div className="search-box">
               <input
                 onChange={(event) => setInput(event.target.value)}
@@ -160,8 +149,14 @@ const Main = () => {
                 placeholder="Enter a prompt here"
               />
               <div className="search-box-icon">
-                <img src={assets.gallery_icon} alt="GalleryIcon" />
-                <img src={assets.mic_icon} alt="MicIcon" onClick={startCall}/>
+                <img src={assets.gallery_icon} alt="GalleryIcon" onClick={() => fileInputRef.current.click()} />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleImageUpload}
+                />
+                <img src={assets.mic_icon} alt="MicIcon" onClick={startCall} />
                 {input ? (
                   <img
                     onClick={() => onSent()}
@@ -182,4 +177,3 @@ const Main = () => {
 };
 
 export default Main;
-

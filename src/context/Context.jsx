@@ -13,6 +13,7 @@ const ContextProvider = (props) => {
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
   const [messages, setMessages] = useState([]); // Added state for messages
+  const [tempImage, setTempImage] = useState(null);
 
   const delayPara = (index, nextWord) => {
     setTimeout(function () {
@@ -25,6 +26,10 @@ const ContextProvider = (props) => {
     setShowResult(false);
   };
 
+  const sendImage = async (imageFile) => {
+    setTempImage(imageFile);
+  };
+
   const sendMessage = async (message) => {
     setMessages(prevMessages => [
       ...prevMessages,
@@ -32,21 +37,31 @@ const ContextProvider = (props) => {
     ]);
 
     try {
-      const userId = getAuth().currentUser.uid;
-      const response = await fetch(`http://localhost:8000/chat/`, { //change this to your server url
+      const user = getAuth().currentUser;
+      const token = await user.getIdToken();
+      const userId = user.uid;
+      const formData = new FormData();
+      formData.append('user_id', userId);
+      formData.append('message', message);
+  
+      if (tempImage) {
+        formData.append('image', tempImage);
+      }
+  
+      const response = await fetch(`http://localhost:8000/chat/`, { // change this to your server URL
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ user_id: userId, message }),
+        body: formData,
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
-
+  
       setMessages(prevMessages => [
         ...prevMessages,
         { text: data.response, sender: 'bot' }
@@ -57,7 +72,6 @@ const ContextProvider = (props) => {
     } catch (error) {
       console.error("Failed to send message: ", error);
       setLoading(false); 
-      // Optionally, handle the error in the UI
     }
   };
 
@@ -80,6 +94,7 @@ const ContextProvider = (props) => {
     newChat,
     messages,
     setMessages,
+    sendImage,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>
