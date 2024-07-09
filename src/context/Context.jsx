@@ -1,5 +1,7 @@
+// In Context.jsx, replace the runChat function with the sendMessage function
+
 import { createContext, useState } from "react";
-import runChat from "../config/gemini";
+import { getAuth } from "firebase/auth"; // Ensure you have this import if you're using Firebase for authentication
 
 export const Context = createContext();
 
@@ -10,6 +12,7 @@ const ContextProvider = (props) => {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
+  const [messages, setMessages] = useState([]); // Added state for messages
 
   const delayPara = (index, nextWord) => {
     setTimeout(function () {
@@ -22,36 +25,44 @@ const ContextProvider = (props) => {
     setShowResult(false);
   };
 
-  const onSent = async (prompt) => {
-    setResultData("");
-    setLoading(true);
-    setShowResult(true);
-    let response;
-    if (prompt !== undefined) {
-      response = await runChat(prompt);
-      setRecentPrompt(prompt);
-    } else {
-      setPrevPrompts((prev) => [...prev, input]);
-      setRecentPrompt(input);
-      response = await runChat(input);
-    }
+  const sendMessage = async (message) => {
+    setMessages(prevMessages => [
+      ...prevMessages,
+      { text: message, sender: 'user' }
+    ]);
 
-    let responseArray = response.split("**");
-    let newResponse = "";
-    for (let i = 0; i < responseArray.length; i++) {
-      if (i == 0 || i % 2 !== 1) {
-        newResponse += responseArray[i];
-      } else {
-        newResponse += "<b>" + responseArray[i] + "</b>";
+    try {
+      const userId = getAuth().currentUser.uid;
+      const response = await fetch(`http://localhost:8000/chat/`, { //change this to your server url
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId, message }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
+
+      setMessages(prevMessages => [
+        ...prevMessages,
+        { text: data.response, sender: 'bot' }
+      ]);
+      setShowResult(true);
+      setLoading(false); 
+      setResultData(data.response);
+    } catch (error) {
+      console.error("Failed to send message: ", error);
+      setLoading(false); 
+      // Optionally, handle the error in the UI
     }
-    let newResponse2 = newResponse.split("*").join("</br>");
-    let newResponseArray = newResponse2.split(" ");
-    for (let i = 0; i < newResponseArray.length; i++) {
-      const nextWord = newResponseArray[i];
-      delayPara(i, nextWord + " ");
-    }
-    setLoading(false);
+  };
+
+  const onSent = () => {
+    sendMessage(input);
     setInput("");
   };
 
@@ -67,6 +78,8 @@ const ContextProvider = (props) => {
     input,
     setInput,
     newChat,
+    messages,
+    setMessages,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>

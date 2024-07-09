@@ -1,24 +1,73 @@
 import "./Main.css";
+import React, { useState, useEffect, useRef } from "react";
 import { assets } from "../../assets/assets";
 import { useContext } from "react";
 import { Context } from "../../context/Context";
+import { getAuth } from "firebase/auth";
+import Vapi from "@vapi-ai/web";
+
+
+const vapi = new Vapi(import.meta.env.VITE_VAPI_API_KEY, { serverUrl: import.meta.env.VITE_VAPI_SERVER_URL });  
+const assistant_id = import.meta.env.VITE_VAPI_ASSISTANT_ID;
+
 
 const Main = () => {
-  // destructuring the object of context
   const {
     input,
     setInput,
     onSent,
     recentPrompt,
     showResult,
+    messages,
     loading,
     resultData,
   } = useContext(Context);
+
+  const [isCalling, setIsCalling] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+  
+
+  const startCall = () => {
+    setIsCalling(true);
+    const userId = getAuth().currentUser.uid;
+    vapi.start(assistant_id, {
+      metadata: { userId: userId }
+    }).then((callId) => {
+      console.log('Started call with ID:', callId);
+    }).catch((error) => {
+      console.error('Failed to start call:', error);
+    });
+  };
+
+  const endCall = () => {
+    setIsCalling(false);
+    vapi.stop().then(() => {
+      console.log('Ended call');
+    }).catch((error) => {
+      console.error('Failed to end call:', error);
+    });
+  };
+
+  const toggleMute = () => {
+    const newMuteState = !vapi.isMuted();
+    vapi.setMuted(newMuteState);
+    setIsMuted(newMuteState);
+  };
+
   return (
     <>
       <div className="main">
         <div className="nav">
-          <p>Gemini</p>
+          <p>Cheers AI</p>
           <img src={assets.user_icon} alt="UserIcon" />
         </div>
         <div className="main-container">
@@ -26,13 +75,13 @@ const Main = () => {
             <>
               <div className="greet">
                 <p>
-                  <span>Hello, Utsav</span>
+                  <span>Hello, How are you feeling today</span>
                 </p>
                 <p>How can I help you today?</p>
               </div>
               <div className="cards">
                 <div className="card">
-                  <p>Suggest beautiful places to see in Canada</p>
+                  <p>I am having Sleep Problem</p>
                   <img src={assets.compass_icon} alt="CompassIcon" />
                 </div>
                 <div className="card">
@@ -40,11 +89,11 @@ const Main = () => {
                   <img src={assets.bulb_icon} alt="CompassIcon" />
                 </div>
                 <div className="card">
-                  <p>List power words for my resume that show teamwork</p>
+                  <p>List some uplifting thing I can do to lift up my mood</p>
                   <img src={assets.message_icon} alt="CompassIcon" />
                 </div>
                 <div className="card">
-                  <p>Create a list of power phrases for my resume</p>
+                  <p>What are some things I can do to improve my mental health</p>
                   <img src={assets.code_icon} alt="CompassIcon" />
                 </div>
               </div>
@@ -63,14 +112,46 @@ const Main = () => {
                     <hr />
                     <hr />
                   </div>
-                ) : (
-                  <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
-                )}
-              </div>
+   ) : (
+    <>
+      <div className="messages__container">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+          >
+            {message.text}
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+      {/* <p dangerouslySetInnerHTML={{ __html: resultData }}></p> */}
+    </>
+  )}
+</div>
+</div>
+)}
+          {isCalling && (
+          <div className="call-overlay">
+            <div className="call-ui">
+              <img src={assets.mic_icon} alt="MicIcon" className="center-icon" />
+              <button onClick={toggleMute}>{isMuted ? 'Unmute' : 'Mute'}</button>
+              <button onClick={endCall}>End Call</button>
             </div>
-          )}
-
+          </div>
+        )}
           <div className="main-bottom">
+          {/* <div className="messages__container">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+          >
+            {message.text}
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div> */}
             <div className="search-box">
               <input
                 onChange={(event) => setInput(event.target.value)}
@@ -80,7 +161,7 @@ const Main = () => {
               />
               <div className="search-box-icon">
                 <img src={assets.gallery_icon} alt="GalleryIcon" />
-                <img src={assets.mic_icon} alt="MicIcon" />
+                <img src={assets.mic_icon} alt="MicIcon" onClick={startCall}/>
                 {input ? (
                   <img
                     onClick={() => onSent()}
@@ -91,11 +172,7 @@ const Main = () => {
               </div>
             </div>
             <p className="bottom-info">
-              Gemini may display inaccurate info, including about people, so
-              double-check its responses.{" "}
-              <a href="https://support.google.com/gemini/answer/13594961?visit_id=638488069169109558-2959892032&p=privacy_notice&rd=1#privacy_notice">
-                Your privacy & Gemini Apps
-              </a>
+              Your mental health is important to us. Please do not hesitate to ask us any questions.
             </p>
           </div>
         </div>
@@ -105,3 +182,4 @@ const Main = () => {
 };
 
 export default Main;
+
