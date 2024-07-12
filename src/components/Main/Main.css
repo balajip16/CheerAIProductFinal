@@ -1,10 +1,53 @@
-.main{
+.main {
     flex: 1;
     min-height: 100vh;
     padding-bottom: 15vh;
-    position: relative;   
+    position: relative;
 }
-.main .nav{
+
+.logout-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logout-modal {
+    background: white;
+    padding: 5rem;
+    border-radius: 8px;
+    text-align: center;
+    color: black;
+    font-size: 2rem;
+}
+
+.logout-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.logout-buttons button {
+    background-color: #007bff;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 1.5rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.logout-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.main .nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -12,36 +55,41 @@
     font-size: 22px;
     color: #585858;
 }
-.main .nav img{
+
+.main .nav img {
     width: 40px;
     height: 40px;
     object-fit: cover;
     border-radius: 50%;
 }
-.main-container{
+
+.main-container {
     max-width: 900px;
     margin: auto;
 }
-.main .greet{
-    margin: 50px 0;
+
+.main .greet {
+    margin: 20px 0; /* Reduce the margin to move the text and cards closer */
     font-size: 56px;
-    color: #C4C7C5;
+    color: #cdaeff;
     font-weight: 500;
     padding: 20px;
 }
-.main .greet span{
-    background: -webkit-linear-gradient(16deg, #4B90FF, #FF5546);
+
+.main .greet span {
+    background: -webkit-linear-gradient(#ff99fd, #297bf6);
     -webkit-background-clip: text;
-    background-clip: text ;
     -webkit-text-fill-color: transparent;
 }
-.main .cards{
+
+.main .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 15px;
-    padding: 20px;
+    padding: 0 20px; /* Remove the top and bottom padding */
 }
-.card{
+
+.card {
     height: 200px;
     padding: 15px;
     background-color: #F0F4F9;
@@ -49,11 +97,75 @@
     position: relative;
     cursor: pointer;
 }
-.card p{
+
+.card p {
     color: #585858;
     font-size: 17px;
 }
-.card img{
+
+.file-upload-indicator {
+    position: absolute;
+    bottom: 100%;
+    left: 20px;
+    background-color: #f0f0f0;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 85px;
+    height: 60px;
+}
+
+.file-upload-indicator .file-preview {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+.file-upload-indicator .file-icon {
+    width: 30px;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #666;
+    margin-right: 8px;
+    text-transform: uppercase;
+}
+
+.file-upload-indicator .file-name {
+    flex-grow: 1;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-upload-indicator button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    padding: 0 5px;
+}
+
+.file-upload-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.card img {
     width: 35px;
     padding: 5px;
     position: absolute;
@@ -62,18 +174,21 @@
     bottom: 10px;
     right: 10px;
 }
-.card:hover{
+
+.card:hover {
     background-color: #DFE4EA;
 }
-.main-bottom{
+
+.main-bottom {
     position: absolute;
-    bottom: 0;
+    bottom: 10px; /* Adjust this value to move the text box closer to the last card */
     width: 100%;
     max-width: 900px;
     padding: 0 20px;
     margin: auto;
 }
-.search-box{
+
+.search-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -82,11 +197,13 @@
     padding: 10px 20px;
     border-radius: 50px;
 }
+
 .search-box img {
     width: 25px;
     cursor: pointer;
 }
-.search-box input{
+
+.search-box input {
     flex: 1;
     background: transparent;
     border: none;
@@ -94,52 +211,108 @@
     padding: 8px;
     font-size: 18px;
 }
-.search-box .search-box-icon{
+
+.call-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.call-modal {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 60rem;
+    height: 40rem;
+    position: relative;
+}
+
+.call-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: absolute;
+    bottom: 30px;
+}
+
+.call-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.call-button img {
+    width: 40px;
+    height: 40px;
+}
+
+.call-button img {
+    width: 40px;
+    height: 40px;
+}
+
+.search-box .search-box-icon {
     display: flex;
     align-items: center;
     gap: 15px;
 }
-.bottom-info{
+
+.bottom-info {
     font-size: 13px;
     margin: 15px auto;
     text-align: center;
     font-weight: 300;
 }
 
-.result{
+.result {
     padding: 0 5%;
     max-height: 70vh;
     overflow-y: scroll;
 }
-.result::-webkit-scrollbar{
+
+.result::-webkit-scrollbar {
     display: none;
 }
-.result-title{
+
+.result-title {
     margin: 40px 0;
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.result img{
+.result img {
     height: 40px;
     object-fit: cover;
     width: 40px;
     border-radius: 50%;
 }
 
-.result-date{
+.result-date {
     display: flex;
     align-items: start;
     gap: 20px;
 }
-.loader{
+
+.loader {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-.loader hr{
+
+.loader hr {
     border-radius: 4px;
     border: none;
     background-color: #F6F7F8;
@@ -148,35 +321,43 @@
     height: 20px;
     animation: loader 3s infinite linear;
 }
+
 @keyframes loader {
-    0%{
+    0% {
         background-position: -800px 0px;
     }
-    100%{
+    100% {
         background-position: 800px 0px;
     }
 }
-.result-data p{
+
+.result-data p {
     font-size: 17px;
     font-weight: 300;
     line-height: 1.8;
 }
-@media (max-wdith: 600px) {
-    .main-bottom input{
-        flex: none ;
+
+@media (max-width: 600px) {
+    .main-bottom input {
+        flex: none;
         width: 150px;
+        
     }
-    .main-bottom img{
+    .main-bottom img {
         width: 20px;
     }
-    .search-box img{
+    .search-box img {
         display: inline-table;
     }
-    .search-box{
-        padding: 5px 10px;
+    .search-box {
+        padding: 10px 10px;
+        margin-bottom: 50px;
     }
-    .search-box div{
+    .search-box div {
         gap: 5px;
+    }
+    .main .cards {
+        margin-top: 0;
     }
 }
 
@@ -191,24 +372,82 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .call-ui {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .call-ui img.center-icon {
-    width: 100px; /* Adjust size as needed */
-    margin-bottom: 20px;
-  }
-  
-  .call-ui button {
-    margin-top: 10px;
-  }
+}
 
-  .messages__container {
+.call-modal {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 60rem;
+    height: 40rem;
+    position: relative;
+}
+
+.call-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6rem;
+    position: absolute;
+    bottom: 5rem;
+}
+
+.call-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.call-button img {
+    width: 5rem;
+    height: 4.5rem;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    .call-modal {
+        width: 80%;
+        height: 80%;
+        padding: 20px;
+    }
+    .main .greet {
+        font-size: 28px;
+    }
+
+    .call-button img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .call-buttons {
+        gap: 10px;
+    }
+    .card {
+        height: 80px; /* Adjusted height for mobile */
+        padding: 10px; /* Adjusted padding for mobile */
+    }
+    .card p {
+        font-size: 14px;
+    }
+    .card img {
+        width: 25px; /* Adjusted size for mobile */
+    }
+    .cards {
+        top: 0px;
+    }
+    .main .greet {
+        margin: 10px 0; /* Further reduce the margin for mobile */
+        font-size: 28px;
+    }
+    .main .cards {
+        margin-top: 0; /* Ensure there is no extra margin at the top */
+    }
+}
+
+.messages__container {
     /* margin-top: 20px; Adjust margin-top to create space between navbar and messages */
     width: 100%;
     max-height: 300px;
@@ -219,9 +458,9 @@
     flex-grow: 1;
     /* padding-left: 300px; Optional: Add padding-left for additional spacing */
     padding-bottom: 75px;
-  }
+}
 
-  .message {
+.message {
     background-color: rgb(19, 162, 263);
     color: rgb(198, 209, 232);
     padding: 10px;
@@ -230,16 +469,49 @@
     max-width: 80%;
     word-wrap: break-word;
     font-family: 'Switzer', sans-serif;
-  }
-  
-  .user-message {
+}
+
+.call-timer {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.user-message {
     align-self: flex-end;
-  
-  }
-  
-  .bot-message {
+}
+
+.bot-message {
     align-self: flex-start;
     /* margin-right: 100px; /* Adjust margin-right to create gap between bot message and alignment */
     background-color: rgb(126, 144, 169);
-  
-  }
+}
+
+.call-status {
+    font-size: 3rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 16rem;
+}
+
+.blinking-dots {
+    display: inline-block;
+    width: 20px;
+    overflow: hidden;
+    vertical-align: bottom;
+    animation: blink-dots 0.3s infinite step-start;
+}
+
+@keyframes blink-dots {
+    0%, 100% { content: ''; }
+    15% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+}

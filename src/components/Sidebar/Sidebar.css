@@ -1,32 +1,25 @@
 .sidebar {
     min-height: 100vh;
+    width: 7rem; /* Adjust this value to your desired width */
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: #f0f4f9;
-    padding: 25px 15px;
+    padding: 25px 10px;
 }
 
 .sidebar img {
     width: 20px;
-}
-
-.sidebar .menu {
-    display: block;
-    margin-left: 10px;
     cursor: pointer;
 }
 
 .sidebar .new-chat {
     margin-top: 50px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
     background-color: #e6eaf1;
     border-radius: 50px;
-    font-size: 14px;
-    color: grey;
     cursor: pointer;
 }
 
@@ -34,21 +27,15 @@
     display: flex;
     flex-direction: column;
     animation: fadeIn 1.5s;
-}
-
-.sidebar .recent-title{
     margin-top: 30px;
-    margin-bottom: 20px;
 }
 
-.sidebar .recent-entry{
+.sidebar .recent-entry {
     display: flex;
-    align-items: start;
-    gap: 10px;
+    justify-content: center;
     padding: 10px;
-    padding-right: 40px;
+    margin-bottom: 10px;
     border-radius: 50px;
-    color: #282828;
     cursor: pointer;
 }
 
@@ -56,22 +43,53 @@
     background-color: #e2e6eb;
 }
 
-
 .sidebar .bottom {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    position: relative; /* Add this */
 }
-
 
 .sidebar .bottom-item {
-    padding-right: 10px;
+    margin-bottom: 20px;
     cursor: pointer;
+    position: relative; /* Add this */
 }
 
+.sidebar .tooltip {
+    display: none;
+    position: absolute;
+    top: -800%;
+    left: -200%;
+    transform: translateX(20%);
+    width: 300px;
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    color: black; /* Changed to black */
+    text-align: center;
+    font-size: 13px;
+}
 
-@media (max-width:600px) {
-    .sidebar{
+.sidebar .bottom-item:hover .tooltip {
+    display: block;
+}
+
+.sidebar .tooltip .email-link {
+    color: blue; /* Make the email link blue */
+    text-decoration: underline; /* Add underline to look like a typical link */
+}
+
+.mydarkmodeIcon {
+    width: 20px;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .sidebar {
         display: none;
     }
-    
 }

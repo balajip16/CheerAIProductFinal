@@ -6,7 +6,7 @@ import { auth } from "./firebase/config";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
-
+import SignUpPage from "./pages/SignUpPage"; // Import SignUpPage
 
 const App = () => {
   const [user, loading] = useAuthState(auth);
@@ -19,13 +19,14 @@ const App = () => {
   }, [loading]);
 
   if (!isAuthReady) {
-    return <div>Loading...</div>; //Loading indicator
+    return <div>Loading...</div>; // Loading indicator
   }
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/signup" element={<SignUpPage />} /> {/* Add SignUpPage route */}
         <Route
           path="/"
           element={

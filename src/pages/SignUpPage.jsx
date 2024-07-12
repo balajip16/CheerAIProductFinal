@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase/config';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo.png";
@@ -7,7 +7,7 @@ import GoogleSvg from "../assets/google.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './AuthPage.css';
 
-const AuthPage = () => {
+const SignUpPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,16 +17,6 @@ const AuthPage = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User registered successfully');
-      navigate('/');
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const handleLogin = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log('User logged in successfully');
       navigate('/');
     } catch (error) {
       console.error(error.message);
@@ -58,8 +48,8 @@ const AuthPage = () => {
               <img src={Logo} alt="Logo" />
             </div>
             <div className="login-center">
-              <h2>Welcome back!</h2>
-              <p>Please enter your details</p>
+              <h2>Sign Up</h2>
+              <p>Please enter your details to create an account</p>
               <form>
                 <input
                   type="email"
@@ -80,30 +70,17 @@ const AuthPage = () => {
                     <FaEye onClick={() => setShowPassword(!showPassword)} />
                   )}
                 </div>
-
-                <div className="login-center-options">
-                  <div className="remember-div">
-                    <input type="checkbox" id="remember-checkbox" />
-                    <label htmlFor="remember-checkbox">
-                      Remember for 30 days
-                    </label>
-                  </div>
-                  <a href="#" className="forgot-pass-link">
-                    Forgot password?
-                  </a>
-                </div>
                 <div className="login-center-buttons">
-                  <button type="button" onClick={handleLogin}>Log In</button>
+                  <button type="button" onClick={handleRegister}>Sign Up</button>
                   <button type="button">
                     <img src={GoogleSvg} alt="Google Icon" />
-                    Log In with Google
+                    Sign Up with Google
                   </button>
                 </div>
               </form>
             </div>
-
             <p className="login-bottom-p">
-              Don't have an account? <a href="/signup">Sign Up</a>
+              Already have an account? <a href="/auth">Log In</a>
             </p>
           </div>
         </div>
@@ -112,4 +89,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default SignUpPage;

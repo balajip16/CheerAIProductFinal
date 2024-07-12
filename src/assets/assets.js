@@ -7,14 +7,20 @@ import bulb_icon from './bulb_icon.png'
 import compass_icon from './compass_icon.png'
 import gallery_icon from './gallery_icon.png'
 import mic_icon from './mic_icon.png'
-import user_icon from './user_icon.png'
+import user_icon from './smile.png'
 import youtube_icon from './youtube_icon.png'
 import message_icon from './message_icon.png'
 import code_icon from './code_icon.png'
 import send_icon from './send_icon.png'
 import gemini_icon from './gemini_icon.png'
+import end_call_icon from './end_call.jpg'
+import mute_icon from './mute_icon.jpg'
+import assistant_icon from './assistant_icon.jpg'
 
 export const assets = {
+    mute_icon, 
+    assistant_icon,
+    end_call_icon,
     history_icon,
     menu_icon,
     plus_icon,
