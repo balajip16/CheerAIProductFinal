@@ -54,7 +54,8 @@ const Sidebar = () => {
           </div>
         </div>
         <div className="bottom-item" onClick={() => setShowLogoutModal(true)}>
-          <img src={assets.setting_icon} alt="Settings" />
+        <img src={assets.setting_icon} alt="Settings" style={{ width: "22px", height:"20px", marginLeft:"5px" }} />
+
         </div>
         <div className="bottom-item">
           <img src="src/assets/bulb_icon.png" alt="Dark Mode" className="mydarkmodeIcon" />
