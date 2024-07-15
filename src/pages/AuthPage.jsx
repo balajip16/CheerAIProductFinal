@@ -85,7 +85,7 @@ const AuthPage = () => {
                   <div className="remember-div">
                     <input type="checkbox" id="remember-checkbox" />
                     <label htmlFor="remember-checkbox">
-                      Remember for 30 days
+                      Remember me
                     </label>
                   </div>
                   <a href="#" className="forgot-pass-link">

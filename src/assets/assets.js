@@ -16,8 +16,10 @@ import gemini_icon from './gemini_icon.png'
 import end_call_icon from './end_call.jpg'
 import mute_icon from './mute_icon.jpg'
 import assistant_icon from './assistant_icon.jpg'
+import logo_icon from './logo.png'
 
 export const assets = {
+    logo_icon,
     mute_icon, 
     assistant_icon,
     end_call_icon,

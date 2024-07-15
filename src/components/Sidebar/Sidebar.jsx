@@ -46,7 +46,7 @@ const Sidebar = () => {
           <div className="tooltip">
             Got questions or need assistance? <br />
             Reach out to the CheersAI team at 
-            <a className="email-link" href="mailto:dhruvreddy05@gmail.com"> dhruvreddy05@gmail.com.</a>
+            <a className="email-link" href="mailto:dhruvreddy05@gmail.com"> dhruvreddy05@gmail.com. </a>
             Our AI therapist securely remembers all chat and call conversations, ensuring your privacy.
             We're proud to offer a free platform dedicated to supporting mental health. Led by a passionate
             team, we're here to help you navigate your journey. For data deletion, privacy concerns, or any

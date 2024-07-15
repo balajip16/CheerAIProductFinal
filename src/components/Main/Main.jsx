@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faPhone, faBars } from '@fortawesome/free-solid-svg-icons'; // Import the faBars icon
 import { useContext } from "react";
 import { Context } from "../../context/Context";
 import { getAuth } from "firebase/auth";
@@ -54,6 +54,7 @@ const Main = () => {
   const [isCalling, setIsCalling] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isMuted, setIsMuted] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // State for showing popup
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const [callDuration, setCallDuration] = useState(0);
@@ -121,22 +122,35 @@ const Main = () => {
     vapi.setMuted(newMuteState);
     setIsMuted(newMuteState);
   };
+  
+  const handleBurgerClick = () => {
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 2000); // Hide popup after 2 seconds
+  };
 
   return (
     <>
       <div className="main">
         <div className="nav">
-          <p>Cheers AI</p>
+          <FontAwesomeIcon icon={faBars} className="burger-menu" onClick={handleBurgerClick} /> {/* Replace logo with burger menu icon */}
+          <p className="logo">CheersAI</p>
           <img src={assets.user_icon} alt="UserIcon" />
         </div>
+
+        {showPopup && (
+          <div className="popup">
+            Access Denied
+          </div>
+        )}
+
         <div className="main-container">
           {!showResult ? (
             <>
               <div className="greet">
                 <p>
-                  <span>Hello, How are you feeling today</span>
+                  <span>Hey there!</span>
                 </p>
-                <p>How can I help you today?</p>
+                <p>How are you feeling today?</p>
               </div>
               <div className="cards">
                 <div className="card">
@@ -160,11 +174,9 @@ const Main = () => {
           ) : (
             <div className="result">
               <div className="result-title">
-                <img src={assets.user_icon} alt="UserIcon" />
                 <p>{recentPrompt}</p>
               </div>
               <div className="result-data">
-                <img src={assets.gemini_icon} alt="GeminiIcon" />
                 {loading ? (
                   <div className="loader">
                     <hr />
@@ -179,6 +191,9 @@ const Main = () => {
                           key={index}
                           className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
                         >
+                          {message.sender === 'bot' && (
+                            <img src={assets.logo_icon} alt="logoIcon" className="logo-icon" />
+                          )}
                           {message.text}
                         </div>
                       ))}
@@ -197,13 +212,13 @@ const Main = () => {
                   Ava speaking<span className="blinking-dots">...</span>
                 </div>
                 <div className="call-buttons">
-                  <button onClick={endCall} className="call-button">
-                    <img src={assets.end_call_icon} alt="End Call" />
-                  </button>
-                  <button onClick={toggleMute} className="call-button">
-                    <img src={assets.mute_icon} alt="Mute" />
-                  </button>
-                </div>
+  <button onClick={endCall} className="call-button">
+    <img src={assets.end_call_icon} alt="End Call" />
+  </button>
+  <button onClick={toggleMute} className={`call-button ${isMuted ? 'muted' : ''}`}>
+    <img src={assets.mute_icon} alt="Mute" />
+  </button>
+</div>
               </div>
             </div>
           )}
@@ -222,7 +237,7 @@ const Main = () => {
                 onChange={(event) => setInput(event.target.value)}
                 value={input}
                 type="text"
-                placeholder="Enter a prompt here"
+                placeholder="Message"
               />
               <div className="search-box-icon">
                 <img
