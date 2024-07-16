@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone, faBars } from '@fortawesome/free-solid-svg-icons'; // Import the faBars icon
+import { faPhone, faBars } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from "react";
 import { Context } from "../../context/Context";
 import { getAuth } from "firebase/auth";
@@ -58,6 +58,7 @@ const Main = () => {
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const [callDuration, setCallDuration] = useState(0);
+  const inputRef = useRef(null); // Ref for the textarea element
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -122,11 +123,30 @@ const Main = () => {
     vapi.setMuted(newMuteState);
     setIsMuted(newMuteState);
   };
-  
+
   const handleBurgerClick = () => {
     setShowPopup(true);
     setTimeout(() => setShowPopup(false), 2000); // Hide popup after 2 seconds
   };
+
+  const handleCardClick = (text) => {
+    setInput(text);
+  };
+
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
+    adjustInputHeight();
+  };
+
+  const adjustInputHeight = () => {
+    const inputElement = inputRef.current;
+    inputElement.style.height = "auto";
+    inputElement.style.height = `${inputElement.scrollHeight}px`;
+  };
+
+  useEffect(() => {
+    adjustInputHeight();
+  }, [input]);
 
   return (
     <>
@@ -153,19 +173,19 @@ const Main = () => {
                 <p>How are you feeling today?</p>
               </div>
               <div className="cards">
-                <div className="card">
+                <div className="card" onClick={() => handleCardClick("I am having Sleep Problem")}>
                   <p>I am having Sleep Problem</p>
                   <img src={assets.compass_icon} alt="CompassIcon" />
                 </div>
-                <div className="card">
+                <div className="card" onClick={() => handleCardClick("How to deal with anxiety?")}>
                   <p>How to deal with anxiety?</p>
                   <img src={assets.bulb_icon} alt="CompassIcon" />
                 </div>
-                <div className="card">
+                <div className="card" onClick={() => handleCardClick("List some uplifting things I can do to lift up my mood")}>
                   <p>List some uplifting things I can do to lift up my mood</p>
                   <img src={assets.message_icon} alt="CompassIcon" />
                 </div>
-                <div className="card">
+                <div className="card" onClick={() => handleCardClick("What are some things I can do to improve my mental health")}>
                   <p>What are some things I can do to improve my mental health</p>
                   <img src={assets.code_icon} alt="CompassIcon" />
                 </div>
@@ -212,13 +232,13 @@ const Main = () => {
                   Ava speaking<span className="blinking-dots">...</span>
                 </div>
                 <div className="call-buttons">
-  <button onClick={endCall} className="call-button">
-    <img src={assets.end_call_icon} alt="End Call" />
-  </button>
-  <button onClick={toggleMute} className={`call-button ${isMuted ? 'muted' : ''}`}>
-    <img src={assets.mute_icon} alt="Mute" />
-  </button>
-</div>
+                  <button onClick={endCall} className="call-button">
+                    <img src={assets.end_call_icon} alt="End Call" />
+                  </button>
+                  <button onClick={toggleMute} className={`call-button ${isMuted ? 'muted' : ''}`}>
+                    <img src={assets.mute_icon} alt="Mute" />
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -233,11 +253,18 @@ const Main = () => {
               ))}
             </div>
             <div className="search-box">
-              <input
-                onChange={(event) => setInput(event.target.value)}
+              <textarea
+                ref={inputRef}
+                onChange={handleInputChange}
                 value={input}
-                type="text"
                 placeholder="Message"
+                rows="1"
+                style={{
+                  overflow: 'hidden',
+                  resize: 'none',
+                  minHeight: '40px',
+                  maxHeight: '150px',
+                }}
               />
               <div className="search-box-icon">
                 <img
