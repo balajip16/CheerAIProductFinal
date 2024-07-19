@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone, faBars } from '@fortawesome/free-solid-svg-icons';
-import { useContext } from "react";
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { Context } from "../../context/Context";
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import Vapi from "@vapi-ai/web";
 import "./Main.css";
 import { assets } from "../../assets/assets";
@@ -54,11 +54,13 @@ const Main = () => {
   const [isCalling, setIsCalling] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isMuted, setIsMuted] = useState(false);
-  const [showPopup, setShowPopup] = useState(false); // State for showing popup
+  const [showPopup, setShowPopup] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const [callDuration, setCallDuration] = useState(0);
-  const inputRef = useRef(null); // Ref for the textarea element
+  const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -124,9 +126,19 @@ const Main = () => {
     setIsMuted(newMuteState);
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut(getAuth());
+      console.log('User logged out successfully');
+      navigate('/login');
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   const handleBurgerClick = () => {
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 2000); // Hide popup after 2 seconds
+    setTimeout(() => setShowPopup(false), 2000);
   };
 
   const handleCardClick = (text) => {
@@ -152,7 +164,9 @@ const Main = () => {
     <>
       <div className="main">
         <div className="nav">
-          <FontAwesomeIcon icon={faBars} className="burger-menu" onClick={handleBurgerClick} /> {/* Replace logo with burger menu icon */}
+          <div className="mobile-logout">
+            <img src={assets.logout1_icon} alt="Logout" className="logout-icon" onClick={() => setShowLogoutModal(true)} />
+          </div>
           <p className="logo">CheersAI</p>
           <img src={assets.user_icon} alt="UserIcon" />
         </div>
@@ -294,6 +308,17 @@ const Main = () => {
           </div>
         </div>
       </div>
+      {showLogoutModal && (
+        <div className="logout-modal-overlay">
+          <div className="logout-modal">
+            <p>Are you sure you want to log out?</p>
+            <div className="logout-buttons">
+              <button onClick={handleLogout}>Log Out</button>
+              <button onClick={() => setShowLogoutModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
