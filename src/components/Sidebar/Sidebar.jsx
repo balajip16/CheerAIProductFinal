@@ -5,6 +5,8 @@ import { Context } from "../../context/Context";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import DarkMode from "./DarkMode";
+import bulb from '../../assets/bulb_icon.png'
+
 
 const Sidebar = () => {
   const { onSent, prevPrompts, setRecentPrompt, newChat } = useContext(Context);
@@ -58,7 +60,7 @@ const Sidebar = () => {
 
         </div>
         <div className="bottom-item">
-          <img src="src/assets/bulb_icon.png" alt="Dark Mode" className="mydarkmodeIcon" />
+          <img src= {bulb} alt="Dark Mode" className="mydarkmodeIcon" />
           <DarkMode />
         </div>
       </div>
