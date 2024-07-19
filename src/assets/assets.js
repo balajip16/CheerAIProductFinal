@@ -8,7 +8,6 @@ import compass_icon from './compass_icon.png'
 import gallery_icon from './gallery_icon.png'
 import mic_icon from './mic_icon.png'
 import user_icon from './smile.png'
-import youtube_icon from './youtube_icon.png'
 import message_icon from './message_icon.png'
 import code_icon from './code_icon.png'
 import send_icon from './send_icon.png'
@@ -17,8 +16,10 @@ import end_call_icon from './end_call.jpg'
 import mute_icon from './mute_icon.jpg'
 import assistant_icon from './assistant_icon.jpg'
 import logo_icon from './logo.png'
+import logout1_icon from './newlogout.png'
 
 export const assets = {
+    logout1_icon,
     logo_icon,
     mute_icon, 
     assistant_icon,
