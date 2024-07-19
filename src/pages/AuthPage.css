@@ -77,19 +77,19 @@ body, html {
 
 .login-logo {
   align-self: center;
-  margin-top: -10px;
+  margin-top: 10px;
   margin-bottom: 80px;
 }
 
 .login-logo img {
-  width: 200px;
-  height: 200px;
+  width: 130px;
+  height: 130px;
 }
 
 .login-center {
   margin: auto 0;
   text-align: center;
-  margin-top: -120px;
+  margin-top: -40px;
 }
 
 .login-center h2 {
@@ -264,8 +264,12 @@ form button[type='button'] {
   }
 
   .login-logo {
-    margin-bottom: 10px;
+    margin-bottom: 60px;
     margin-top: 40px;
+  }
+  .login-logo img {
+   width: 8rem;
+   height:8rem;
   }
 
   .login-center {

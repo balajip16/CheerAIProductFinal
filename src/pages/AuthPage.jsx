@@ -82,12 +82,7 @@ const AuthPage = () => {
                 </div>
 
                 <div className="login-center-options">
-                  <div className="remember-div">
-                    <input type="checkbox" id="remember-checkbox" />
-                    <label htmlFor="remember-checkbox">
-                      Remember me
-                    </label>
-                  </div>
+                 
                   <a href="#" className="forgot-pass-link">
                     Forgot password?
                   </a>
