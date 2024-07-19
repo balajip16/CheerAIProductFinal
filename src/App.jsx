@@ -25,7 +25,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/login" element={<AuthPage />} />
         <Route path="/signup" element={<SignUpPage />} /> {/* Add SignUpPage route */}
         <Route
           path="/"
@@ -38,7 +38,7 @@ const App = () => {
                 <Main />
               </>
             ) : (
-              <Navigate to="/auth" replace />
+              <Navigate to="/login" replace />
             )
           }
         />

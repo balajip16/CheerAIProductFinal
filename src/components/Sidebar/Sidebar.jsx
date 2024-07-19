@@ -20,7 +20,7 @@ const Sidebar = () => {
     try {
       await signOut(getAuth());
       console.log('User logged out successfully');
-      navigate('/auth');
+      navigate('/login');
     } catch (error) {
       console.error(error.message);
     }

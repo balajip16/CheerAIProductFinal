@@ -80,7 +80,7 @@ const SignUpPage = () => {
               </form>
             </div>
             <p className="login-bottom-p">
-              Already have an account? <a href="/auth">Log In</a>
+              Already have an account? <a href="/login">Log In</a>
             </p>
           </div>
         </div>
