@@ -173,20 +173,20 @@ const Main = () => {
                 <p>How are you feeling today?</p>
               </div>
               <div className="cards">
-                <div className="card" onClick={() => handleCardClick("I am having Sleep Problem")}>
-                  <p>I am having Sleep Problem</p>
+                <div className="card" onClick={() => handleCardClick("I am having a sleeping problem. What can I do?")}>
+                  <p>I am having a sleeping problem. What can I do?</p>
                   <img src={assets.compass_icon} alt="CompassIcon" />
                 </div>
-                <div className="card" onClick={() => handleCardClick("How to deal with anxiety?")}>
-                  <p>How to deal with anxiety?</p>
+                <div className="card" onClick={() => handleCardClick("How do I deal with anxiety?")}>
+                  <p>How do I deal with anxiety?</p>
                   <img src={assets.bulb_icon} alt="CompassIcon" />
                 </div>
-                <div className="card" onClick={() => handleCardClick("List some uplifting things I can do to lift up my mood")}>
-                  <p>List some uplifting things I can do to lift up my mood</p>
+                <div className="card" onClick={() => handleCardClick("List some uplifting things I can do to better my mood.")}>
+                  <p>List some uplifting things I can do to better my mood.</p>
                   <img src={assets.message_icon} alt="CompassIcon" />
                 </div>
-                <div className="card" onClick={() => handleCardClick("What are some things I can do to improve my mental health")}>
-                  <p>What are some things I can do to improve my mental health</p>
+                <div className="card" onClick={() => handleCardClick("What are some things I can do to improve my mental health?")}>
+                  <p>What are some things I can do to improve my mental health?</p>
                   <img src={assets.code_icon} alt="CompassIcon" />
                 </div>
               </div>
