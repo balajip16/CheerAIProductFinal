@@ -34,7 +34,6 @@ export const assets = {
     gallery_icon,
     mic_icon,
     user_icon,
-    youtube_icon,
     message_icon,
     code_icon,
     send_icon,
