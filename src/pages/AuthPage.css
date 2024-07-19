@@ -224,6 +224,14 @@ form button[type='button'] {
   text-decoration: underline;
 }
 
+.error-message {
+  color: red;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
 /* Add this for the dividing line */
 .divider {
   width: 1px;

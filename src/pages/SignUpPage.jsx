@@ -12,14 +12,23 @@ const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+
+  const errorMessages = {
+    'auth/invalid-email': 'Invalid email address. Please include "@" in the email address.',
+    'auth/weak-password': 'Password should be at least 6 characters.',
+    // Add more error messages here if needed
+  };
 
   const handleRegister = async () => {
+    setError(''); // Clear previous error message
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User registered successfully');
       navigate('/');
     } catch (error) {
-      console.error(error.message);
+      const userFriendlyMessage = errorMessages[error.code] || 'An error occurred during sign up.';
+      setError(userFriendlyMessage);
     }
   };
 
@@ -33,7 +42,7 @@ const SignUpPage = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="authpage">
@@ -50,6 +59,7 @@ const SignUpPage = () => {
             <div className="login-center">
               <h2>Sign Up</h2>
               <p>Please enter your details to create an account</p>
+              {error && <p style={{ color: 'red', fontSize: '1.6rem', marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>{error}</p>}
               <form>
                 <input
                   type="email"

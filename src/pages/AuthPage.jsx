@@ -12,24 +12,38 @@ const AuthPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+
+  const errorMessages = {
+    'auth/invalid-email': 'Invalid email address. Please include "@" in the email address.',
+    'auth/user-disabled': 'User account is disabled.',
+    'auth/user-not-found': 'User not found. Please check the email address.',
+    'auth/wrong-password': 'Invalid credentials entered. Please check your password.',
+  };
 
   const handleRegister = async () => {
+    setError('');
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User registered successfully');
       navigate('/');
     } catch (error) {
       console.error(error.message);
+      const userFriendlyMessage = errorMessages[error.code] || 'An error occurred during sign up.';
+      setError(userFriendlyMessage);
     }
   };
 
   const handleLogin = async () => {
+    setError('');
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('User logged in successfully');
       navigate('/');
     } catch (error) {
       console.error(error.message);
+      const userFriendlyMessage = errorMessages[error.code] || 'Invalid credentials entered. Please try again.';
+      setError(userFriendlyMessage);
     }
   };
 
@@ -43,7 +57,7 @@ const AuthPage = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="authpage">
@@ -60,6 +74,7 @@ const AuthPage = () => {
             <div className="login-center">
               <h2>Welcome back!</h2>
               <p>Please enter your details</p>
+              {error && <p style={{ color: 'red', fontSize: '1.6rem', marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>{error}</p>}
               <form>
                 <input
                   type="email"
@@ -80,12 +95,8 @@ const AuthPage = () => {
                     <FaEye onClick={() => setShowPassword(!showPassword)} />
                   )}
                 </div>
-
                 <div className="login-center-options">
-                 
-                  <a href="#" className="forgot-pass-link">
-                    Forgot password?
-                  </a>
+                  <a href="#" className="forgot-pass-link">Forgot password?</a>
                 </div>
                 <div className="login-center-buttons">
                   <button type="button" onClick={handleLogin}>Log In</button>
@@ -96,7 +107,6 @@ const AuthPage = () => {
                 </div>
               </form>
             </div>
-
             <p className="login-bottom-p">
               Don't have an account? <a href="/signup">Sign Up</a>
             </p>
