@@ -48,7 +48,7 @@ const ContextProvider = (props) => {
         formData.append('image', tempImage);
       }
   
-      const response = await fetch(`http://54.160.119.90:8000/chat/`, { // change this to your server URL
+      const response = await fetch(`https://api.cheersai.co/chat/`, { // change this to your server URL
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

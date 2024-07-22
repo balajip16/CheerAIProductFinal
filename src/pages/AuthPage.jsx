@@ -26,7 +26,7 @@ const AuthPage = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User registered successfully');
-      navigate('/home');
+      navigate('/chat');
     } catch (error) {
       console.error(error.message);
       const userFriendlyMessage = errorMessages[error.code] || 'An error occurred during sign up.';
@@ -39,7 +39,7 @@ const AuthPage = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('User logged in successfully');
-      navigate('/home');
+      navigate('/chat');
     } catch (error) {
       console.error(error.message);
       const userFriendlyMessage = errorMessages[error.code] || 'Invalid credentials entered. Please try again.';
@@ -50,7 +50,7 @@ const AuthPage = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigate('/home');
+        navigate('/chat');
       }
     });
 
