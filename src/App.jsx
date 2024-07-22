@@ -25,6 +25,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route index element={<Navigate to="login"/>}/>
         <Route path="/login" element={<AuthPage />} />
         <Route path="/signup" element={<SignUpPage />} /> {/* Add SignUpPage route */}
         <Route
