@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/login" element={<AuthPage />} />
         <Route path="/signup" element={<SignUpPage />} /> {/* Add SignUpPage route */}
         <Route
-          path="/"
+          path="/home"
           element={
             loading ? (
               <div>Loading...</div> // Loading indicator

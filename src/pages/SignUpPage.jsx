@@ -25,7 +25,7 @@ const SignUpPage = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User registered successfully');
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       const userFriendlyMessage = errorMessages[error.code] || 'An error occurred during sign up.';
       setError(userFriendlyMessage);
@@ -35,7 +35,7 @@ const SignUpPage = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigate('/');
+        navigate('/home');
       }
     });
 
