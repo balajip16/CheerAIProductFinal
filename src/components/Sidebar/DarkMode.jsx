@@ -16,10 +16,10 @@ const storedTheme = localStorage.getItem("theme");
 
 const prefersDark =
   window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches;
+  window.matchMedia("(prefers-color-scheme: light)").matches;
 
 const defaultDark =
-  storedTheme === "dark" || (storedTheme === null && prefersDark);
+  storedTheme === "light" || (storedTheme === null && prefersDark);
 
 if (defaultDark) {
   setDark();
