@@ -17,8 +17,10 @@ import mute_icon from './mute_icon.jpg'
 import assistant_icon from './assistant_icon.jpg'
 import logo_icon from './logo.png'
 import logout1_icon from './newlogout.png'
+import spinner_icon from './Spinner-2.gif'
 
 export const assets = {
+    spinner_icon,
     logout1_icon,
     logo_icon,
     mute_icon, 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase/config';
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { auth, googleProvider } from '../firebase/config'; // Import googleProvider
 import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/google.png";
@@ -23,19 +23,45 @@ const SignUpPage = () => {
   const handleRegister = async () => {
     setError(''); // Clear previous error message
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      console.log('User registered successfully');
-      navigate('/chat');
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await sendEmailVerification(user); // Send verification email
+      console.log('User registered successfully. Verification email sent.');
+      alert('Verification email sent. Please check your inbox and verify your email before logging in.');
+      navigate('/login'); // Redirect to login page
+
     } catch (error) {
       const userFriendlyMessage = errorMessages[error.code] || 'An error occurred during sign up.';
       setError(userFriendlyMessage);
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+
+      if (!user.emailVerified) {
+        await sendEmailVerification(user); // Send verification email for Google sign-up
+        alert('Verification email sent. Please check your inbox and verify your email before logging in.');
+        auth.signOut();
+      } else {
+        navigate('/chat');
+      }
+    } catch (error) {
+      console.error('Google sign-up error:', error.message);
+      setError('Google sign-up failed. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         navigate('/chat');
+      } else if (user) {
+        setError('Please verify your email before logging in.');
+        auth.signOut();
       }
     });
 
@@ -82,7 +108,7 @@ const SignUpPage = () => {
                 </div>
                 <div className="login-center-buttons">
                   <button type="button" onClick={handleRegister}>Sign Up</button>
-                  <button type="button">
+                  <button type="button" onClick={handleGoogleSignUp}>
                     <img src={GoogleSvg} alt="Google Icon" />
                     Sign Up with Google
                   </button>

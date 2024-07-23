@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase/config';
+import { signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { auth, googleProvider } from '../firebase/config'; // Import googleProvider
 import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/google.png";
@@ -21,25 +21,19 @@ const AuthPage = () => {
     'auth/wrong-password': 'Invalid credentials entered. Please check your password.',
   };
 
-  const handleRegister = async () => {
-    setError('');
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      console.log('User registered successfully');
-      navigate('/chat');
-    } catch (error) {
-      console.error(error.message);
-      const userFriendlyMessage = errorMessages[error.code] || 'An error occurred during sign up.';
-      setError(userFriendlyMessage);
-    }
-  };
-
   const handleLogin = async () => {
     setError('');
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log('User logged in successfully');
-      navigate('/chat');
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      if (user.emailVerified) {
+        console.log('User logged in successfully');
+        navigate('/chat');
+      } else {
+        setError('Please verify your email before logging in.');
+        auth.signOut();
+      }
     } catch (error) {
       console.error(error.message);
       const userFriendlyMessage = errorMessages[error.code] || 'Invalid credentials entered. Please try again.';
@@ -47,10 +41,31 @@ const AuthPage = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+
+      if (user.emailVerified) {
+        console.log('User signed in with Google');
+        navigate('/chat');
+      } else {
+        setError('Please verify your email before logging in.');
+        auth.signOut();
+      }
+    } catch (error) {
+      console.error('Google sign-in error:', error.message);
+      setError('Google sign-in failed. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         navigate('/chat');
+      } else if (user) {
+        setError('Please verify your email before logging in.');
+        auth.signOut();
       }
     });
 
@@ -100,7 +115,7 @@ const AuthPage = () => {
                 </div>
                 <div className="login-center-buttons">
                   <button type="button" onClick={handleLogin}>Log In</button>
-                  <button type="button">
+                  <button type="button" onClick={handleGoogleSignIn}>
                     <img src={GoogleSvg} alt="Google Icon" />
                     Log In with Google
                   </button>

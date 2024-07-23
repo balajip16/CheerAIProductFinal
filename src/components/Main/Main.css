@@ -303,7 +303,7 @@
   height: 60px;
   width: 60px;
   top: 10px;
-  left: 1rem;
+  left: 0.8rem;
   right: 0;
   bottom: 0;
   background-color: rgba(128, 128, 128, 0.5);
@@ -394,6 +394,11 @@
 }
 
 @media (max-width: 670px) {
+  .call-button.muted::before {
+   
+    top: 7px;
+    left: 0.5rem;
+  }
   .main-bottom textarea {
     flex: none;
     width: 150px;
@@ -415,7 +420,7 @@
   }
   .search-box {
     padding: 10px 30px;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
   }
   .search-box div {
     gap: 5px;
@@ -657,7 +662,8 @@
   .bottom-info {
     font-size: 12px;
     padding: 0 10px;
-    margin-top: -39px;
+    margin-top: -38px;
+    margin-bottom: 68px;
   }
 
   .messages__container {

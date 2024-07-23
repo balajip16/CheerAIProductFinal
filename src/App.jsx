@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import SignUpPage from "./pages/SignUpPage"; // Import SignUpPage
+import VerifyEmail from "./pages/VerifyEmail"; // Import VerifyEmail
 
 const App = () => {
   const [user, loading] = useAuthState(auth);
@@ -25,9 +26,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Navigate to="login"/>}/>
+        <Route index element={<Navigate to="login" />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/signup" element={<SignUpPage />} /> {/* Add SignUpPage route */}
+        <Route path="/verify-email" element={<VerifyEmail />} /> {/* Add VerifyEmail route */}
         <Route
           path="/chat"
           element={
@@ -47,4 +49,5 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
 export default App;
