@@ -89,7 +89,7 @@ const AuthPage = () => {
             <div className="login-center">
               <h2>Welcome back!</h2>
               <p>Please enter your details</p>
-              {error && <p style={{ color: 'red', fontSize: '1.6rem', marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>{error}</p>}
+              
               <form>
                 <input
                   type="email"
@@ -113,6 +113,7 @@ const AuthPage = () => {
                 <div className="login-center-options">
                   <a href="#" className="forgot-pass-link">Forgot password?</a>
                 </div>
+                {error && <p style={{ color: 'red', fontSize: '1.6rem', marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>{error}</p>}
                 <div className="login-center-buttons">
                   <button type="button" onClick={handleLogin}>Log In</button>
                   <button type="button" onClick={handleGoogleSignIn}>
