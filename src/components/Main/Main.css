@@ -389,10 +389,36 @@
 }
 
 .result-data p {
-  font-size: 90px;
+  font-size: 15px;
   font-weight: 300;
   line-height: 1.8;
+  margin-bottom: 10px; /* Add margin to space out paragraphs */
 }
+
+.result-data ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.result-data ul li {
+  background: #f0f4f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0; /* Add margin to space out list items */
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.result-data ul li:nth-child(odd) {
+  background: #e9eff5;
+}
+
+.result-data strong {
+  color: #333;
+}
+
 
 @media (max-width: 670px) {
   .call-button.muted::before {

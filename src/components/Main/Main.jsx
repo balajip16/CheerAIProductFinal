@@ -237,7 +237,11 @@ const Main = () => {
                           {message.sender === 'bot' && (
                             <img src={assets.logo_icon} alt="logoIcon" className="logo-icon" />
                           )}
-                          {message.text}
+                          {message.sender === 'bot' ? (
+                            <div dangerouslySetInnerHTML={{ __html: message.text }} />
+                          ) : (
+                            message.text
+                          )}
                         </div>
                       </div>
                     ))}

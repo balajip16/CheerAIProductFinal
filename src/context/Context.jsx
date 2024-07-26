@@ -2,6 +2,8 @@
 
 import { createContext, useState } from "react";
 import { getAuth } from "firebase/auth"; // Ensure you have this import if you're using Firebase for authentication
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 export const Context = createContext();
 
@@ -35,7 +37,7 @@ const ContextProvider = (props) => {
       ...prevMessages,
       { text: message, sender: 'user' }
     ]);
-
+  
     try {
       const user = getAuth().currentUser;
       const token = await user.getIdToken();
@@ -61,19 +63,21 @@ const ContextProvider = (props) => {
       }
   
       const data = await response.json();
+      const sanitizedHtml = DOMPurify.sanitize(marked(data.response));
   
       setMessages(prevMessages => [
         ...prevMessages,
-        { text: data.response, sender: 'bot' }
+        { text: sanitizedHtml, sender: 'bot' }
       ]);
       setShowResult(true);
-      setLoading(false); 
-      setResultData(data.response);
+      setLoading(false);
+      setResultData(sanitizedHtml);
     } catch (error) {
       console.error("Failed to send message: ", error);
-      setLoading(false); 
+      setLoading(false);
     }
   };
+  
 
   const onSent = () => {
     sendMessage(input);
