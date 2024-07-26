@@ -297,7 +297,6 @@
   height: 80px;
 }
 
-
 .call-button.muted::before {
   content: "";
   position: absolute;
@@ -309,7 +308,6 @@
   bottom: 0;
   background-color: rgba(128, 128, 128, 0.5);
   border-radius: 60%;
-  
 }
 
 .search-box .search-box-icon {
@@ -329,6 +327,7 @@
   padding: 0 2%;
   max-height: 120vh;
   overflow-y: scroll;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .result::-webkit-scrollbar {
@@ -397,7 +396,6 @@
 
 @media (max-width: 670px) {
   .call-button.muted::before {
-   
     top: 7px;
     left: 0.5rem;
   }
@@ -529,25 +527,62 @@
   overflow-y: auto;
   flex-grow: 1;
   padding-bottom: 75px;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
-
 .message {
-  padding: 10px;
-  margin: 5px 0;
-  max-width: 80%;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  max-width: 100%;
   font-size: 14px;
   word-wrap: break-word;
   font-family: "Poppins", sans-serif;
   position: relative;
+  align-self: flex-start; /* Align messages to the left */
+  background-color: transparent; /* Remove background bubble */
+  border: none; /* Remove border */
+}
+
+.profile-icon {
+  margin-left: -1.7rem; /* Space between icon and message text */
+  margin-right: 1.7rem;
+  font-size: 18px; /* Adjust the size as needed */
+  color:#9000a9;
 }
 
 .message .logo-icon {
   position: absolute;
-  top: 13px;
-  left: -25px; /* Adjust this value if needed */
-  width: 25px; /* Smaller width */
-  height: 25px; /* Smaller height */
+  top: 3px;
+  left: -38px;
+  width: 22px;
+  height: 22px;
   object-fit: cover;
+}
+
+.message-wrapper {
+  position: relative;
+  margin-bottom: 10px; /* Adjust this value to control spacing between messages */
+  width: 100%;
+}
+
+.message-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; /* Adjust this to position the line */
+  left: 0;
+  width: 100%;
+  height: 0.8px; /* Line thickness */
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(0, 0, 0, 0.237) 50%,
+    transparent
+  );
+}
+
+/* Remove the last line */
+.message-wrapper:last-child::after {
+  display: none;
 }
 
 .call-timer {
@@ -564,20 +599,19 @@
 }
 
 .user-message {
-  align-self: flex-end;
-  background-color: #dce9ff79;
-  border-radius: 20px;
-  color: black;
+  align-self: flex-start; /* Align user messages to the left */
+  background-color: transparent; /* Remove background bubble */
+  border: none; /* Remove border */
   padding: 10px 20px;
 }
 
 .bot-message {
-  align-self: flex-start;
-  background-color: transparent;
-  border-radius: 20px;
-  color: black;
+  align-self: flex-start; /* Align bot messages to the left */
+  background-color: transparent; /* Remove background bubble */
+  border: none; /* Remove border */
   padding: 10px 20px;
-  margin-left: 30px; /* Space for the logo */
+  margin-left: 20px; /* Space for the logo */
+  
 }
 
 .call-status {
@@ -635,6 +669,9 @@
   .card {
     height: 80px;
     padding: 10px;
+    border-style: solid;
+    border-width: 0.1px;
+    border-color:#5400c2;
   }
 
   .card p {
@@ -649,8 +686,11 @@
 
   .search-box {
     gap: 10px;
-    padding: 10px 15px;
-    border-radius: 25px;
+    padding: 5px 10px;
+    border-radius: 13px;
+    border:#33333351;
+    border-width: 1px;
+    border-style: solid;
   }
 
   .search-box textarea {
@@ -664,8 +704,8 @@
   .bottom-info {
     font-size: 12px;
     padding: 0 10px;
-    margin-top: -38px;
-    margin-bottom: 28px;
+    margin-top: -45px;
+    margin-bottom: 12px;
   }
 
   .messages__container {
@@ -697,12 +737,22 @@
     margin-bottom: 20rem;
     font-size: 3rem;
   }
+  .wider-card{
+    width:35.5rem;
+  }
 }
+
 /* Add this to Main.css */
 .mobile-logout {
   display: none;
 }
+@media (min-width: 670px) {
+  .wider-card{
+    width:86rem;
+    height: 8rem;
+  }
 
+}
 @media (max-width: 670px) {
   .burger-menu {
     display: none;

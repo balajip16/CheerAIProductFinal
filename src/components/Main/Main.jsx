@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { RiUser3Line } from "react-icons/ri"; // Add import for user icon
 import { Context } from "../../context/Context";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Vapi from "@vapi-ai/web";
 import "./Main.css";
 import { assets } from "../../assets/assets";
+import { FaPhoneAlt } from "react-icons/fa";
 
 const vapi = new Vapi(import.meta.env.VITE_VAPI_API_KEY);
 const assistant_id = import.meta.env.VITE_VAPI_ASSISTANT_ID;
@@ -117,7 +117,7 @@ const Main = () => {
 
   const endCall = () => {
     setIsCalling(false);
-    vapi.stop()
+    vapi.stop();
   };
 
   const toggleMute = () => {
@@ -143,6 +143,11 @@ const Main = () => {
 
   const handleCardClick = (text) => {
     setInput(text);
+  };
+
+  const handleSend = () => {
+    onSent();
+    setUploadedFiles([]);
   };
 
   const handleInputChange = (event) => {
@@ -203,6 +208,10 @@ const Main = () => {
                   <p>What are some things I can do to improve my mental health?</p>
                   <img src={assets.code_icon} alt="CompassIcon" />
                 </div>
+                <div className="card wider-card" onClick={startCall}>
+                  <p>Looking out for a support to overcome your mental trauma at the moment? Call us now!</p>
+                  <img src={assets.call_icon} alt="CallIcon" />
+                </div>
               </div>
             </>
           ) : (
@@ -218,22 +227,22 @@ const Main = () => {
                     <hr />
                   </div>
                 ) : (
-                  <>
-                    <div className="messages__container">
-                      {messages.map((message, index) => (
-                        <div
-                          key={index}
-                          className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
-                        >
+                  <div className="messages__container">
+                    {messages.map((message, index) => (
+                      <div key={index} className={`message-wrapper ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}>
+                        <div className="message">
+                          {message.sender === 'user' && (
+                            <RiUser3Line className="profile-icon" />
+                          )}
                           {message.sender === 'bot' && (
                             <img src={assets.logo_icon} alt="logoIcon" className="logo-icon" />
                           )}
                           {message.text}
                         </div>
-                      ))}
-                      <div ref={messagesEndRef} />
-                    </div>
-                  </>
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </div>
                 )}
               </div>
             </div>
@@ -243,7 +252,7 @@ const Main = () => {
               <div className="call-modal">
                 <div className="call-timer">{formatTime(callDuration)}</div>
                 <div className="call-status">
-                  Ava speaking<span className="blinking-dots">...</span>
+                  Ivy speaking<span className="blinking-dots">...</span>
                 </div>
                 <div className="call-buttons">
                   <button onClick={endCall} className="call-button">
@@ -292,10 +301,10 @@ const Main = () => {
                   style={{ display: 'none' }}
                   onChange={handleImageUpload}
                 />
-                <FontAwesomeIcon icon={faPhone} onClick={startCall} style={{ height: '25px' }} />
+                <FaPhoneAlt onClick={startCall} style={{ color: '#8A2BE2', fontSize: '20px' }} />
                 {input ? (
                   <img
-                    onClick={() => onSent()}
+                    onClick={handleSend}
                     src={assets.send_icon}
                     alt="SendIcon"
                   />
@@ -303,7 +312,7 @@ const Main = () => {
               </div>
             </div>
             <p className="bottom-info">
-              Your mental health is important to us. Please do not hesitate to ask us any questions.
+            CheersAI may not be accurate at all times.
             </p>
           </div>
         </div>

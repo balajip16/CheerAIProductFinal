@@ -18,8 +18,10 @@ import assistant_icon from './assistant_icon.jpg'
 import logo_icon from './logo.png'
 import logout1_icon from './newlogout.png'
 import spinner_icon from './Spinner-2.gif'
+import call_icon from './circle-call.png'
 
 export const assets = {
+    call_icon,
     spinner_icon,
     logout1_icon,
     logo_icon,
