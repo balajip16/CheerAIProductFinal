@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { RiUser3Line } from "react-icons/ri"; // Add import for user icon
+import { RiUser3Line } from "react-icons/ri";
 import { Context } from "../../context/Context";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -56,11 +56,33 @@ const Main = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [termsScrolled, setTermsScrolled] = useState(false);
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const [callDuration, setCallDuration] = useState(0);
   const inputRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the user has accepted the terms
+    const acceptedTerms = localStorage.getItem("acceptedTerms");
+    if (!acceptedTerms) {
+      setShowTermsModal(true);
+    }
+  }, []);
+
+  const handleTermsAccept = () => {
+    localStorage.setItem("acceptedTerms", "true");
+    setShowTermsModal(false);
+  };
+
+  const handleTermsScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      setTermsScrolled(true);
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -209,7 +231,7 @@ const Main = () => {
                   <img src={assets.code_icon} alt="CompassIcon" />
                 </div>
                 <div className="card wider-card" onClick={startCall}>
-                  <p>Looking out for a support to overcome your mental trauma at the moment? Call us now!</p>
+                  <p>Looking out for support to overcome your mental trauma at the moment? Call us now!</p>
                   <img src={assets.call_icon} alt="CallIcon" />
                 </div>
               </div>
@@ -316,7 +338,7 @@ const Main = () => {
               </div>
             </div>
             <p className="bottom-info">
-            CheersAI may not be accurate at all times.
+              CheersAI may not be accurate at all times.
             </p>
           </div>
         </div>
@@ -328,6 +350,55 @@ const Main = () => {
             <div className="logout-buttons">
               <button onClick={handleLogout}>Log Out</button>
               <button onClick={() => setShowLogoutModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showTermsModal && (
+        <div className="terms-modal">
+          <div className="terms-content">
+            <h2>Terms of Service</h2>
+            <div className="terms-text" onScroll={handleTermsScroll}>
+              <p>Effective Date: [July 2nd, 2024]</p>
+              <p>Welcome to CheersAI! These Terms of Service ("Terms") govern your access and use of the CheersAI platform, including our website at CheersAI.co and our AI therapist services. By using our platform, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, please do not use our services.</p>
+              <p>1. Acceptance of Terms</p>
+              <p>By accessing or using CheersAI, you agree to these Terms, including any updates or modifications. We may update these Terms from time to time, and your continued use of the platform indicates your acceptance of the updated Terms. If you do not agree with the changes, you should stop using our services.</p>
+              <p>2. Services Provided</p>
+              <p>CheersAI offers a platform where users can interact with an AI therapist through chat and call features. The AI therapist provides support and guidance but is not a substitute for professional mental health services.</p>
+              <p>3. User Data and Privacy</p>
+              <p>3.1 Data Collection: We collect and store conversations and interactions between users and the AI therapist to improve and update the AI's contextual understanding.</p>
+              <p>3.2 Data Privacy: We are committed to protecting your privacy. We do not sell your data to third parties. For more information, please review our Privacy Policy.</p>
+              <p>3.3 Data Deletion: Users can request data deletion at any time by contacting us at support.cheersai@gmail.com or using the delete data button available on the platform. Once requested, data will be permanently deleted from our databases.</p>
+              <p>4. User Responsibilities</p>
+              <p>4.1 Age Requirement: You must be at least 13 years old to use our services. If you are under 13, you must have the consent of a parent or guardian.</p>
+              <p>4.2 Account Security: You are responsible for maintaining the confidentiality of your account and password. Please notify us immediately of any unauthorized use of your account.</p>
+              <p>4.3 Prohibited Conduct: You agree not to use the platform for any unlawful or harmful purposes, including but not limited to harassment, abuse, or dissemination of inappropriate content.</p>
+              <p>5. Intellectual Property</p>
+              <p>All content, trademarks, and intellectual property on the CheersAI platform are owned by CheersAI or its licensors. You may not use, reproduce, or distribute any content from our platform without prior written consent.</p>
+              <p>6. Limitation of Liability</p>
+              <p>CheersAI is not liable for any indirect, incidental, or consequential damages arising from your use of the platform. Our services are provided "as is," and we do not guarantee the accuracy, reliability, or suitability of the information provided.</p>
+              <p>7. Updates to Terms</p>
+              <p>We may update these Terms periodically to reflect changes in our services or legal requirements. Users will be notified of significant changes, and continued use of the platform after such updates constitutes acceptance of the revised Terms. If you do not agree with the updated Terms, you must discontinue using our services.</p>
+              <p>8. Termination of Services</p>
+              <p>We reserve the right to suspend or terminate your access to the platform at our discretion, without notice, for any violation of these Terms or other reasons deemed appropriate by CheersAI.</p>
+              <p>9. Contact Information</p>
+              <p>If you have any questions or concerns about these Terms, please contact us at support.cheersai@gmail.com.</p>
+              <p>10. Governing Law</p>
+              <p>These Terms are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law principles.</p>
+              <p>11. Entire Agreement</p>
+              <p>These Terms constitute the entire agreement between you and CheersAI regarding your use of our platform and services and supersede any prior agreements or understandings.</p>
+              <p>By using CheersAI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. Thank you for choosing CheersAI for your mental wellness journey.</p>
+              <p>Please note that this Terms of Service document is a general guideline. It is recommended to have a legal professional review and customize the document to fit the specific legal requirements and business practices of CheersAI.</p>
+            </div>
+            <div className="terms-acceptance">
+              <button
+                type="button"
+                className="new"
+                onClick={handleTermsAccept}
+                disabled={!termsScrolled}
+              >
+                Accept Terms
+              </button>
             </div>
           </div>
         </div>
