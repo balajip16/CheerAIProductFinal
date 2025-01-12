@@ -18,7 +18,7 @@ Welcome to **Gemini**, a project inspired by Google's AI capabilities. This appl
 
 ## Features
 
-- **AI Simulation**: Mimics Google AI capabilities using the Gemini API.
+- **AI Simulation**: Mimics Google AI and OpenAI capabilities using the Gemini and OpenAPI APIs.
 - **Authentication**: Secure user authentication via Firebase.
 - **Modern UI**: Responsive and interactive user interface designed with React.js and SCSS.
 - **Fast Performance**: Built with VITE for optimized performance and fast loading times.
